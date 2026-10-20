@@ -78,7 +78,7 @@ Dependency grouping, gated Dependabot auto-merge, pull-request checks, and `work
 
 Timings are measured where the lab runs. Large prime generation has a 60-second per-run safety cap and a candidate cap; stopping produces no prime claim. The exhaustive census has its own explicit toy cap. No measured point is extrapolated to a real-world attack.
 
-Central accent/favicon/category and port confirmation remain pending. Port 4228 is provisional because the full sibling census was unavailable. The shared catalog is unchanged.
+The Crypto Lab catalog integration records this lab’s concept, level, source evidence and fleet automation. Playwright port 4228 is unique across all 223 registered configurations; strictPort is enforced and existing servers are never reused.
 
 ---
 
