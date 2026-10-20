@@ -1,0 +1,51 @@
+[
+  {
+    "name": "extra square",
+    "file": "src/primality/millerRabin.ts",
+    "anchor": "r<out.s",
+    "replacement": "r<=out.s",
+    "test": "exhausted chain stops"
+  },
+  {
+    "name": "omit final base",
+    "file": "src/primality/liars.ts",
+    "anchor": "a<n;a++",
+    "replacement": "a<n-1n;a++",
+    "test": "Fermat negative claim"
+  },
+  {
+    "name": "omit fixed base",
+    "file": "src/primality/fixedBase.ts",
+    "anchor": "THIRTEEN_BASES.slice(0,k)",
+    "replacement": "THIRTEEN_BASES.slice(0,k-1)",
+    "test": "fixed list accepts"
+  },
+  {
+    "name": "wrong gcd branch",
+    "file": "src/primality/millerRabin.ts",
+    "anchor": "gcd(previous-1n,n)",
+    "replacement": "gcd(previous+1n,n)",
+    "test": "chain squares and recovered factor"
+  },
+  {
+    "name": "density loses ln2",
+    "file": "src/gen/fips186.ts",
+    "anchor": "bits*Math.LN2/2",
+    "replacement": "bits/2",
+    "test": "density mean matches"
+  },
+  {
+    "name": "overconfident probable verdict",
+    "file": "src/main.ts",
+    "anchor": "PROBABLY PRIME \u2014 no witness in ",
+    "replacement": "PRIME \u2014 no witness in ",
+    "test": "probable-prime verdict is hedged"
+  },
+  {
+    "name": "remove negative claim",
+    "file": "src/main.ts",
+    "anchor": "Passing Fermat\u2019s test for every coprime base does not show a number is prime.",
+    "replacement": "All checks passed.",
+    "test": "Fermat negative claim"
+  }
+]

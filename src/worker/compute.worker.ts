@@ -1,0 +1,2 @@
+import {run} from './tasks';
+self.onmessage=async({data})=>{try{const result=await run(data.name,data.args,progress=>self.postMessage({progress}));self.postMessage({result});}catch(e){self.postMessage({error:e instanceof Error?e.message:String(e)});}};

@@ -1,0 +1,3 @@
+import {gcd} from '../nt/bigint';import {fermat} from './fermat';import {millerRabin} from './millerRabin';import {trialPrime} from '../truth/sieve';
+export function countLiars(n:bigint){if(n<3n||n%2n===0n||n>20001n)throw Error('Exact counting accepts odd n from 3 to 20,001.');let phi=0,fermatLiars=0,strong=0;const rows:{base:number;unit:boolean;fermat:boolean;strong:boolean}[]=[];for(let a=1n;a<n;a++){const unit=gcd(a,n)===1n,f=fermat(n,a).passes,s=!millerRabin(n,a).composite;if(unit)phi++;if(f)fermatLiars++;if(s)strong++;if(n<=1000n)rows.push({base:Number(a),unit,fermat:f,strong:s});}return {n,phi,fermatLiars,strong,composite:!trialPrime(n),rows};}
+// [extension] point: Euler / Solovay–Strassen liars with the same explicit denominator.
