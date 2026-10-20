@@ -68,7 +68,7 @@ npm run test:e2e
 npm run test:mutations
 ```
 
-Initial local correctness run: **33 tests passed**, including independent small-number enumeration, published pseudoprimes, exact liar counts, large Mersenne-prime fixtures, and module-boundary checks. No coverage percentage is claimed. `e2e/claims.spec.ts` independently rederives displayed values; `e2e/gate.ts` checks structure only and runs the fleet's composite-aware contrast and non-text checks. Seven scripted mutations require a passing baseline, changed built bytes, a named failure, immediate restoration, and a passing restored test.
+Initial local correctness run: **34 tests passed**, including independent small-number enumeration, published pseudoprimes, exact liar counts, large Mersenne-prime and RFC 3526 fixtures, and module-boundary checks. No coverage percentage is claimed. `e2e/claims.spec.ts` independently rederives displayed values; `e2e/gate.ts` checks structure only and runs the fleet's composite-aware contrast and non-text checks. Seven scripted mutations require a passing baseline, changed built bytes, a named failure, immediate restoration, and a passing restored test.
 
 Accessibility scans the production build at 1280 and 320 pixels through real controls, including failure states. Browser QA runs in CI when no supported local browser-control surface is available. A local unit/build pass alone is not publication evidence.
 

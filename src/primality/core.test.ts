@@ -33,3 +33,5 @@ describe('fixed-base boundary and generator',()=>{
  it('independent truth imports no primality module',()=>{expect(readFileSync('src/truth/sieve.ts','utf8')).not.toMatch(/from\s+['"].*primality/);});
  it('arithmetic boundaries and perfect powers',()=>{expect(pow(2n,10n,17n)).toBe(4n);expect(gcd(-66n,561n)).toBe(33n);expect(isqrt(80n)).toBe(8n);expect(perfectPower(121n)).toEqual({base:11n,exponent:2});expect(perfectPower(27n)).toEqual({base:3n,exponent:3});expect(perfectPower(31n)).toBeNull();});
 });
+
+it('RFC 3526 section 3 published 2048-bit prime passes the BigInt path',()=>{const f=JSON.parse(readFileSync('src/data/rfc3526-group14.json','utf8'));const n=BigInt('0x'+f.prime_hex);expect(n.toString(2).length).toBe(2048);expect(probablePrime(n,8,seeded()).prime).toBe(true);});
