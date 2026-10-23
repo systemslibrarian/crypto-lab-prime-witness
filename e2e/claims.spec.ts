@@ -1,5 +1,21 @@
 import {test,expect} from '@playwright/test';import {boot} from './gate';
 const gcd=(a:bigint,b:bigint):bigint=>b?gcd(b,a%b):a;
+test('editable certificate is independently checked and tampering retires proof',async({page})=>{
+  await boot(page);
+  await page.getByRole('tab',{name:/Prove a small prime/}).click();
+  await expect(page.locator('[data-verdict=certificate]')).toContainText('PROVEN PRIME');
+  const proof=JSON.parse(await page.locator('#certificate-json').inputValue());
+  expect(proof.p).toBe('97');
+  expect(proof.factors.reduce((product:bigint,f:{q:string;exponent:number})=>product*BigInt(f.q)**BigInt(f.exponent),1n)).toBe(96n);
+  proof.witness='1';
+  await page.locator('#certificate-json').fill(JSON.stringify(proof));
+  await expect(page.locator('[data-verdict=certificate]')).toHaveCount(0);
+  await page.getByRole('button',{name:'Verify pasted proof'}).click();
+  await expect(page.locator('#certificate-out')).toContainText('Input refused');
+  await page.locator('#certificate-p').fill('561');
+  await page.getByRole('button',{name:'Generate proof'}).click();
+  await expect(page.locator('#certificate-out')).toContainText('composite input');
+});
 test('chain squares and recovered factor independently agree',async({page})=>{await boot(page);await page.getByRole('button',{name:'Next square'}).click();await page.getByRole('button',{name:'Next square'}).click();await page.getByRole('button',{name:'Next square'}).click();const values=(await page.locator('[data-chain-value]').allTextContents()).map(BigInt);for(let i=1;i<values.length;i++)expect(values[i-1]**2n%561n).toBe(values[i]);const factor=BigInt((await page.locator('[data-factor]').getAttribute('data-factor'))!);expect(factor).toBe(gcd(values[values.length-2]-1n,561n));expect(factor*(561n/factor)).toBe(561n);await expect(page.locator('[data-verdict=chain]')).toContainText('COMPOSITE');await page.locator('#n').fill('563');await expect(page.locator('[data-verdict=chain]')).toHaveCount(0);await expect(page.locator('#chain-out')).toContainText('Retired: inputs changed');});
 test('exhausted chain stops after s values',async({page})=>{await boot(page);await page.getByRole('button',{name:'15, base 2'}).click();await expect(page.locator('[data-chain-value]')).toHaveCount(1);await expect(page.locator('[data-verdict=chain]')).toContainText('COMPOSITE');});
 test('Fermat negative claim and exact liar fractions',async({page})=>{await boot(page);await page.getByRole('tab',{name:/Count the liars/}).click();await page.getByRole('button',{name:'Count all bases'}).click();const data=page.locator('[data-count-n]');await expect(data).toBeAttached();const phi=Number(await data.getAttribute('data-phi')),f=Number(await data.getAttribute('data-fermat')),s=Number(await data.getAttribute('data-strong'));expect(phi).toBe(320);expect(f).toBe(phi);expect(s).toBe(10);await expect(page.locator('[data-verdict=fermat-negative]')).toContainText('Passing Fermat’s test for every coprime base does not show a number is prime.');await page.locator('#liar-n').selectOption('9');await page.getByRole('button',{name:'Count all bases'}).click();await expect(page.locator('[data-count-n]')).toHaveAttribute('data-strong','2');});

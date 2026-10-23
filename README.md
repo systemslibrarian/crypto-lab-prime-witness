@@ -18,6 +18,7 @@ Built to the [Crypto Lab master standard](https://github.com/systemslibrarian/cr
 4. **Prime density:** 16–2048-bit candidates, counts and timings, a per-run histogram, and the labelled prime-number-theorem estimate.
 5. **Liar census:** exact counts for odd composites through a selectable cap of 2,001; larger individual presets include 8,911.
 6. **1024-bit generation:** five rounds from FIPS 186-5 Table B.1 (the 2^-112 random-generation target), with the limits of that statement on screen.
+7. **Prove a small prime:** generate an editable recursive Lucas–Pratt certificate for p ≤ 1,000,000 and check it independently. The verifier proves every factor of p−1 recursively and checks the full-order modular witness; corrupting the factor tree or witness makes verification fail. This toy range uses trial division during generation. It is separate from the 1024-bit probable-prime generator and does not certify that generator's output.
 
 ## When to Use It
 
@@ -33,6 +34,7 @@ Target: [Prime Witness](https://systemslibrarian.github.io/crypto-lab-prime-witn
 - Fermat accepts every coprime base for a Carmichael number.
 - An exhausted Miller–Rabin chain can prove compositeness without producing a factor.
 - Random-candidate posterior error estimates in FIPS Table B.1 are **not** the adversarial fixed-composite 4^-t bound.
+- A certificate can turn a small probable-prime claim into a proof, provided its factorization and recursive subproofs are actually checked. The generator's trial division is not used by the verifier. See Pratt's [original paper](https://boole.stanford.edu/pub/SucCert.pdf) and the [2026 Archive of Formal Proofs formalization](https://isa-afp.org/entries/Pratt_Certificate.html); this browser implementation is not formally verified.
 - The stronger φ(n)/4 strong-liar bound excludes 9; the all-base quarter bound has a different denominator.
 - BigInt is not constant-time. The browser RNG is not established as a FIPS-validated DRBG. No secrets are persisted.
 - Workers are terminated on cancellation; changed inputs retire old verdicts. In degraded worker-unavailable mode, bounded computation can occupy the main thread.
