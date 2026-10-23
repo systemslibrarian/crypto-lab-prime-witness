@@ -34,7 +34,7 @@ Target: [Prime Witness](https://systemslibrarian.github.io/crypto-lab-prime-witn
 - Fermat accepts every coprime base for a Carmichael number.
 - An exhausted Miller–Rabin chain can prove compositeness without producing a factor.
 - Random-candidate posterior error estimates in FIPS Table B.1 are **not** the adversarial fixed-composite 4^-t bound.
-- A certificate can turn a small probable-prime claim into a proof, provided its factorization and recursive subproofs are actually checked. The generator's trial division is not used by the verifier. See Pratt's [original paper](https://boole.stanford.edu/pub/SucCert.pdf) and the [2026 Archive of Formal Proofs formalization](https://isa-afp.org/entries/Pratt_Certificate.html); this browser implementation is not formally verified.
+- A certificate can turn a small probable-prime claim into a proof, provided its factorization and recursive subproofs are actually checked. The generator's trial division is not used by the verifier. See Pratt's [original paper](https://boole.stanford.edu/pub/SucCert.pdf) and the [Archive of Formal Proofs entry (2013; revised 2024)](https://isa-afp.org/entries/Pratt_Certificate.html); this browser implementation is not formally verified.
 - The stronger φ(n)/4 strong-liar bound excludes 9; the all-base quarter bound has a different denominator.
 - BigInt is not constant-time. The browser RNG is not established as a FIPS-validated DRBG. No secrets are persisted.
 - Workers are terminated on cancellation; changed inputs retire old verdicts. In degraded worker-unavailable mode, bounded computation can occupy the main thread.

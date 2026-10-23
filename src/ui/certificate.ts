@@ -12,7 +12,7 @@ export function certificatePanel(panel: HTMLElement): void {
     '<div class="field"><label for="certificate-json">Editable certificate JSON</label><textarea id="certificate-json" rows="10" spellcheck="false" aria-describedby="certificate-scope"></textarea></div>' +
     '<div id="certificate-out" class="result" role="status" aria-live="polite"></div>' +
     '<p id="certificate-scope" class="note">Generation uses trial division and searches for a witness; verification uses only the supplied factor tree and modular arithmetic. Input is capped at 1,000,000 and JSON at 20,000 characters. This is an educational proof checker, not a production prime generator or a general certificate format.</p>' +
-    '<p class="note">Primary source: <a href="https://boole.stanford.edu/pub/SucCert.pdf">Vaughan Pratt, <em>Every Prime Has a Succinct Certificate</em> (1975)</a>. A <a href="https://isa-afp.org/entries/Pratt_Certificate.html">2026 formalization in the Archive of Formal Proofs</a> covers certificate soundness; this browser code is not machine-verified.</p>';
+    '<p class="note">Primary source: <a href="https://boole.stanford.edu/pub/SucCert.pdf">Vaughan Pratt, <em>Every Prime Has a Succinct Certificate</em> (1975)</a>. The <a href="https://isa-afp.org/entries/Pratt_Certificate.html">Archive of Formal Proofs entry (2013; revised 2024)</a> formalizes certificate soundness; this browser code is not machine-verified.</p>';
 
   const candidate = el<HTMLInputElement>('#certificate-p', panel);
   const input = el<HTMLTextAreaElement>('#certificate-json', panel);

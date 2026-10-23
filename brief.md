@@ -36,9 +36,11 @@ NEW DEMO BRIEF
                      Carmichael numbers and Korselt's criterion; a Miller–Rabin stepper that
                      extracts a factor from a nontrivial square root of 1; exact strong-liar
                      fractions against the proven bounds; fixed-base versus random-base testing
-                     on published strong pseudoprimes; prime generation in the FIPS 186-5 shape.
-- Non-goals:         AKS and other deterministic proofs; primality certificates (ECPP,
-                     Pratt); Lucas, Baillie–PSW and Solovay–Strassen (Lucas named as the
+                     on published strong pseudoprimes; prime generation in the FIPS 186-5 shape;
+                     a toy-range recursive Lucas–Pratt certificate generated and independently
+                     checked for p ≤ 1,000,000 (added after the original brief).
+- Non-goals:         AKS, ECPP, and large-input proof systems; Lucas, Baillie–PSW
+                     and Solovay–Strassen (Lucas named as the
                      extension); safe-prime and DH-group generation; factoring beyond the gcd a
                      witness hands you; constant-time code.
 ```
