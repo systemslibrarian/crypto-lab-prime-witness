@@ -23,3 +23,17 @@ test('fixed list accepts a factored composite and states the limitation',async({
 test('density mean matches rows and estimate retains ln2',async({page})=>{await boot(page);await page.getByRole('tab',{name:/Prime density/}).click();await page.getByRole('button',{name:'Generate and measure'}).click();const data=page.locator('[data-mean]');await expect(data).toBeAttached();const tries=(await data.getAttribute('data-tries'))!.split(',').map(Number),mean=Number(await data.getAttribute('data-mean'));expect(tries.reduce((a,b)=>a+b,0)/tries.length).toBe(mean);await expect(page.locator('#gen-out')).toContainText((16*Math.log(2)/2).toFixed(2));});
 test('probable-prime verdict is hedged and FIPS profile is accurately scoped',async({page})=>{test.setTimeout(120000);await boot(page);await page.getByRole('tab',{name:/1024-bit generation/}).click();await expect(page.locator('#panel')).toContainText('Table B.1 gives five');await expect(page.locator('#panel')).toContainText('Not a FIPS-conformant RSA key generator');await page.getByRole('button',{name:'Generate and measure'}).click();await expect(page.locator('[data-verdict=generation]')).toContainText('PROBABLY PRIME — no witness in 5 random bases',{timeout:90000});});
 test('input refusal, tabs and no-op retirement',async({page})=>{await boot(page);await page.locator('#n').dispatchEvent('input');await expect(page.locator('[data-chain]')).toBeVisible();await page.locator('#n').fill('abc');await page.getByRole('button',{name:'Inspect chain'}).click();await expect(page.locator('#chain-out')).toContainText('Input refused');await page.getByRole('tab',{name:/Witness stepper/}).focus();await page.keyboard.press('ArrowRight');await expect(page.getByRole('tab',{name:/Count the liars/})).toHaveAttribute('aria-selected','true');await expect(page.locator('#chain-out')).toHaveCount(0);});
+
+test('direct primality decisions do not display an uncomputed square chain', async ({page}) => {
+  await boot(page);
+  for (const [n, verdict] of [['3','PROVEN PRIME'],['4','COMPOSITE — even number'],['1','NEITHER PRIME NOR COMPOSITE']]) {
+    await page.locator('#n').fill(n);
+    await page.locator('#base').fill('1');
+    await page.locator('#inspect').click();
+    const out = page.locator('#chain-out');
+    await expect(out).toContainText(verdict);
+    await expect(out).toContainText('No modular squaring was needed');
+    await expect(out).not.toContainText('Odd d');
+    await expect(out.getByRole('button', {name:'Next square'})).toHaveCount(0);
+  }
+});
