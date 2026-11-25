@@ -1,5 +1,26 @@
 import {test,expect} from '@playwright/test';import {boot} from './gate';
 const gcd=(a:bigint,b:bigint):bigint=>b?gcd(b,a%b):a;
+test('the proof verdict follows the current certificate text', async ({ page }) => {
+  await boot(page);
+  await page.getByRole('tab', {name: /Prove a small prime/}).click();
+  const editor = page.locator('#certificate-json');
+  const verdict = page.locator('[data-verdict=certificate]');
+  const generate = page.getByRole('button', {name: 'Generate proof'});
+  const proof97 = await editor.inputValue();
+  await editor.fill('');
+  await expect(verdict).toHaveCount(0);
+  await generate.click();
+  await editor.dispatchEvent('input');
+  await expect(verdict).toContainText('recursive certificate checks pass');
+  await page.locator('#certificate-p').fill('2');
+  await generate.click();
+  await expect(verdict).toContainText('base case for 2');
+  await editor.fill(proof97);
+  await expect(verdict).toHaveCount(0);
+  await page.getByRole('button', {name: 'Verify pasted proof'}).click();
+  await expect(verdict).toContainText('recursive certificate checks pass');
+  await expect(page.locator('#certificate-out')).toContainText('Top candidate: 97');
+});
 test('editable certificate is independently checked and tampering retires proof',async({page})=>{
   await boot(page);
   await page.getByRole('tab',{name:/Prove a small prime/}).click();

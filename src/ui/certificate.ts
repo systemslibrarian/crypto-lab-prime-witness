@@ -25,8 +25,12 @@ export function certificatePanel(panel: HTMLElement): void {
       const proof = JSON.parse(input.value) as unknown;
       const steps = verifyCertificate(proof);
       const top = steps.at(-1)!;
-      out.innerHTML = verdict('pass', 'PROVEN PRIME — recursive certificate checks pass',
-        'Each factor is certified, the factors multiply to p−1, and the modular witness has full order.', 'certificate') +
+      const proofVerdict = top.p === 2n
+        ? verdict('pass', 'PROVEN PRIME — base case for 2',
+          'The verifier checked the base certificate for 2: witness 1 and an empty factor list.', 'certificate')
+        : verdict('pass', 'PROVEN PRIME — recursive certificate checks pass',
+          'Each factor is certified, the factors multiply to p−1, and the modular witness has full order.', 'certificate');
+      out.innerHTML = proofVerdict +
         '<p>Top candidate: <code>' + escape(top.p) + '</code>. The table lists each proof node after its factor proofs.</p>' +
         table(['Proved p', 'Witness a', 'Factorization of p−1', 'a^((p−1)/q) mod p for each q'],
           steps.map(step => [step.p, step.witness, step.factorization,
@@ -41,6 +45,7 @@ export function certificatePanel(panel: HTMLElement): void {
     try {
       if (!/^\d{1,7}$/.test(candidate.value.trim())) throw new Error('Enter an integer from 2 through 1,000,000.');
       input.value = JSON.stringify(makeCertificate(BigInt(candidate.value.trim())), null, 2);
+      input.dispatchEvent(new Event('input', { bubbles: true }));
       verify();
     } catch (error) {
       setError(out, error);
